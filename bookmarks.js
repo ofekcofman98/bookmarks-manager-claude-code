@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'bookmarks';
+const CATEGORIES   = ['General','Work','News','Entertainment','Learning','Shopping','Social','Tools'];
 
 // ── Storage helpers ────────────────────────────────────────────────────────
 function load() {
@@ -65,12 +66,17 @@ function render() {
         <a href="${escAttr(b.url)}" target="_blank" rel="noopener noreferrer">${escHtml(b.url)}</a>
       </div>
       <span class="badge">${escHtml(b.category)}</span>
+      <button class="edit-btn"   data-id="${b.id}" title="Edit">&#x270E;</button>
       <button class="delete-btn" data-id="${b.id}" title="Delete">&#x2715;</button>
     </div>
   `).join('');
 
   listEl.querySelectorAll('.delete-btn').forEach(btn => {
     btn.addEventListener('click', () => deleteBookmark(btn.dataset.id));
+  });
+
+  listEl.querySelectorAll('.edit-btn').forEach(btn => {
+    btn.addEventListener('click', () => startEdit(btn.dataset.id));
   });
 }
 
@@ -94,6 +100,49 @@ form.addEventListener('submit', e => {
   render();
   display.render();
 });
+
+// ── Edit ───────────────────────────────────────────────────────────────────
+function startEdit(id) {
+  const b    = load().find(b => b.id === id);
+  if (!b) return;
+
+  const card = listEl.querySelector(`.bookmark-card[data-id="${id}"]`);
+  card.classList.add('editing');
+
+  const categoryOptions = CATEGORIES.map(cat =>
+    `<option value="${cat}"${cat === b.category ? ' selected' : ''}>${cat}</option>`
+  ).join('');
+
+  card.innerHTML = `
+    <div class="edit-fields">
+      <input class="edit-title" type="text"  value="${escHtml(b.title)}" placeholder="Title" required />
+      <input class="edit-url"   type="url"   value="${escHtml(b.url)}"   placeholder="https://example.com" required />
+      <select class="edit-cat">${categoryOptions}</select>
+    </div>
+    <div class="edit-actions">
+      <button class="save-btn"   data-id="${id}">Save</button>
+      <button class="cancel-btn">Cancel</button>
+    </div>
+  `;
+
+  card.querySelector('.save-btn').addEventListener('click', () => saveEdit(id, card));
+  card.querySelector('.cancel-btn').addEventListener('click', () => render());
+}
+
+function saveEdit(id, card) {
+  const title    = card.querySelector('.edit-title').value.trim();
+  const url      = card.querySelector('.edit-url').value.trim();
+  const category = card.querySelector('.edit-cat').value;
+
+  if (!title || !url) return;
+
+  const bookmarks = load().map(b =>
+    b.id === id ? { ...b, title, url, category } : b
+  );
+  save(bookmarks);
+  render();
+  display.render();
+}
 
 // ── Delete ─────────────────────────────────────────────────────────────────
 function deleteBookmark(id) {

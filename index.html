@@ -164,7 +164,7 @@
       white-space: nowrap;
     }
 
-    .delete-btn {
+    .delete-btn, .edit-btn {
       background: none;
       border: none;
       cursor: pointer;
@@ -176,6 +176,62 @@
     }
 
     .delete-btn:hover { color: #ef4444; }
+    .edit-btn:hover   { color: #6366f1; }
+
+    /* ── Inline edit form ── */
+    .bookmark-card.editing {
+      flex-direction: column;
+      align-items: stretch;
+      gap: .6rem;
+    }
+
+    .edit-fields { display: grid; gap: .5rem; }
+
+    .edit-fields input, .edit-fields select {
+      width: 100%;
+      padding: .4rem .65rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: .85rem;
+      background: #f8fafc;
+      transition: border-color .15s;
+    }
+
+    .edit-fields input:focus, .edit-fields select:focus {
+      outline: none;
+      border-color: #6366f1;
+      background: #fff;
+    }
+
+    .edit-actions { display: flex; gap: .5rem; }
+
+    .save-btn {
+      padding: .35rem .9rem;
+      background: #6366f1;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+
+    .save-btn:hover { background: #4f46e5; }
+
+    .cancel-btn {
+      padding: .35rem .9rem;
+      background: #fff;
+      color: #64748b;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+
+    .cancel-btn:hover { background: #f1f5f9; }
 
     .empty {
       text-align: center;
