@@ -163,6 +163,60 @@
       padding: 2rem 0;
       font-size: .9rem;
     }
+
+    /* ── Grouped display ── */
+    #grouped-display { margin-top: 2.5rem; }
+
+    #grouped-display h2 {
+      font-size: 1.1rem;
+      color: #475569;
+      margin-bottom: 1rem;
+      padding-bottom: .5rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .bd-group { margin-bottom: 1.5rem; }
+
+    .bd-category-heading {
+      font-size: .9rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: .5rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+
+    .bd-count {
+      font-size: .7rem;
+      background: #e0e7ff;
+      color: #4338ca;
+      padding: .15rem .45rem;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .bd-list { list-style: none; display: grid; gap: .4rem; }
+
+    .bd-item a {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-radius: 8px;
+      padding: .6rem 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+      text-decoration: none;
+      transition: box-shadow .15s;
+    }
+
+    .bd-item a:hover { box-shadow: 0 2px 8px rgba(99,102,241,.15); }
+
+    .bd-title { font-size: .875rem; font-weight: 600; color: #1e293b; }
+
+    .bd-url { font-size: .75rem; color: #6366f1; margin-top: .15rem;
+              white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .bd-empty { text-align: center; color: #94a3b8; font-size: .9rem; padding: 1rem 0; }
   </style>
 </head>
 <body>
@@ -205,8 +259,13 @@
   </div>
 
   <div id="bookmark-list"></div>
+
+  <div id="grouped-display">
+    <h2>Bookmarks by Category</h2>
+  </div>
 </div>
 
+<script src="bookmark-display.js"></script>
 <script src="bookmarks.js"></script>
 </body>
 </html>

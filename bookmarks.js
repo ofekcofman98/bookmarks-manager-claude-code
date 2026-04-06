@@ -80,6 +80,7 @@ form.addEventListener('submit', e => {
 
   form.reset();
   render();
+  display.render();
 });
 
 // ── Delete ─────────────────────────────────────────────────────────────────
@@ -87,6 +88,7 @@ function deleteBookmark(id) {
   const bookmarks = load().filter(b => b.id !== id);
   save(bookmarks);
   render();
+  display.render();
 }
 
 // ── Escape helpers (prevent XSS) ───────────────────────────────────────────
@@ -105,5 +107,9 @@ function escAttr(str) {
   return escHtml(trimmed);
 }
 
+// ── Grouped display ────────────────────────────────────────────────────────
+const display = new BookmarkDisplay('#grouped-display');
+
 // ── Init ───────────────────────────────────────────────────────────────────
 render();
+display.render();
