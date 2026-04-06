@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bookmark Manager</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f1f5f9;
+      color: #1e293b;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.75rem;
+      margin-bottom: 2rem;
+      color: #0f172a;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* ── Form ── */
+    form {
+      background: #fff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+      display: grid;
+      gap: .75rem;
+      margin-bottom: 2rem;
+    }
+
+    form h2 { font-size: 1rem; color: #475569; }
+
+    label { font-size: .875rem; font-weight: 600; color: #334155; }
+
+    input, select {
+      width: 100%;
+      padding: .5rem .75rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: .9rem;
+      margin-top: .25rem;
+      background: #f8fafc;
+      transition: border-color .15s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #6366f1;
+      background: #fff;
+    }
+
+    button[type="submit"] {
+      padding: .6rem 1.25rem;
+      background: #6366f1;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      justify-self: start;
+      transition: background .15s;
+    }
+
+    button[type="submit"]:hover { background: #4f46e5; }
+
+    /* ── Filter bar ── */
+    .filter-bar {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .filter-bar button {
+      padding: .35rem .85rem;
+      border-radius: 20px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      font-size: .8rem;
+      cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+
+    .filter-bar button.active,
+    .filter-bar button:hover {
+      background: #6366f1;
+      color: #fff;
+      border-color: #6366f1;
+    }
+
+    /* ── Bookmark list ── */
+    #bookmark-list { display: grid; gap: .75rem; }
+
+    .bookmark-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,.07);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .bookmark-card .info { flex: 1; min-width: 0; }
+
+    .bookmark-card .title {
+      font-weight: 600;
+      font-size: .95rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .bookmark-card a {
+      color: #6366f1;
+      text-decoration: none;
+      font-size: .8rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
+
+    .bookmark-card a:hover { text-decoration: underline; }
+
+    .badge {
+      font-size: .7rem;
+      font-weight: 600;
+      padding: .2rem .55rem;
+      border-radius: 12px;
+      background: #e0e7ff;
+      color: #4338ca;
+      white-space: nowrap;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #94a3b8;
+      font-size: 1.1rem;
+      line-height: 1;
+      transition: color .15s;
+      flex-shrink: 0;
+    }
+
+    .delete-btn:hover { color: #ef4444; }
+
+    .empty {
+      text-align: center;
+      color: #94a3b8;
+      padding: 2rem 0;
+      font-size: .9rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Bookmark Manager</h1>
+
+  <form id="bookmark-form">
+    <h2>Add a bookmark</h2>
+
+    <div>
+      <label for="title">Title</label>
+      <input id="title" type="text" placeholder="My favourite site" required />
+    </div>
+
+    <div>
+      <label for="url">URL</label>
+      <input id="url" type="url" placeholder="https://example.com" required />
+    </div>
+
+    <div>
+      <label for="category">Category</label>
+      <select id="category">
+        <option value="General">General</option>
+        <option value="Work">Work</option>
+        <option value="News">News</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Learning">Learning</option>
+        <option value="Shopping">Shopping</option>
+        <option value="Social">Social</option>
+        <option value="Tools">Tools</option>
+      </select>
+    </div>
+
+    <button type="submit">Add Bookmark</button>
+  </form>
+
+  <div class="filter-bar" id="filter-bar">
+    <button class="active" data-filter="All">All</button>
+  </div>
+
+  <div id="bookmark-list"></div>
+</div>
+
+<script src="bookmarks.js"></script>
+</body>
+</html>
