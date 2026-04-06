@@ -10,22 +10,32 @@ function save(bookmarks) {
 }
 
 // ── DOM refs ───────────────────────────────────────────────────────────────
-const form       = document.getElementById('bookmark-form');
-const titleInput = document.getElementById('title');
-const urlInput   = document.getElementById('url');
-const catInput   = document.getElementById('category');
-const listEl     = document.getElementById('bookmark-list');
-const filterBar  = document.getElementById('filter-bar');
+const form        = document.getElementById('bookmark-form');
+const titleInput  = document.getElementById('title');
+const urlInput    = document.getElementById('url');
+const catInput    = document.getElementById('category');
+const listEl      = document.getElementById('bookmark-list');
+const filterBar   = document.getElementById('filter-bar');
+const searchInput = document.getElementById('search-input');
 
 // ── State ──────────────────────────────────────────────────────────────────
 let activeFilter = 'All';
+let searchQuery  = '';
 
 // ── Render ─────────────────────────────────────────────────────────────────
 function render() {
   const bookmarks = load();
-  const filtered  = activeFilter === 'All'
-    ? bookmarks
-    : bookmarks.filter(b => b.category === activeFilter);
+  const query = searchQuery.toLowerCase();
+
+  const filtered = bookmarks.filter(b => {
+    if (activeFilter !== 'All' && b.category !== activeFilter) return false;
+    if (!query) return true;
+    return (
+      b.title.toLowerCase().includes(query) ||
+      b.url.toLowerCase().includes(query) ||
+      b.category.toLowerCase().includes(query)
+    );
+  });
 
   // Filter buttons
   const categories = ['All', ...new Set(bookmarks.map(b => b.category))];
@@ -42,7 +52,9 @@ function render() {
 
   // Bookmark cards
   if (filtered.length === 0) {
-    listEl.innerHTML = '<p class="empty">No bookmarks yet — add one above.</p>';
+    listEl.innerHTML = query
+      ? '<p class="empty">No bookmarks match your search.</p>'
+      : '<p class="empty">No bookmarks yet — add one above.</p>';
     return;
   }
 
@@ -106,6 +118,12 @@ function escAttr(str) {
   if (!/^https?:\/\//i.test(trimmed)) return '#';
   return escHtml(trimmed);
 }
+
+// ── Search ─────────────────────────────────────────────────────────────────
+searchInput.addEventListener('input', () => {
+  searchQuery = searchInput.value.trim();
+  render();
+});
 
 // ── Grouped display ────────────────────────────────────────────────────────
 const display = new BookmarkDisplay('#grouped-display');
